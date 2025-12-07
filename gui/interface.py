@@ -1,0 +1,69 @@
+#Name: Kalia Hudson
+#Date: 12-6-25
+#Program Name: Harvestor 3.0
+#Program Description: This application is an extension of harvestor a web scrapper.
+#This version introduces proxie rotation and image handling while maintaining
+#the previous gui from version 2.0.
+
+#File Name: interface.py
+#File Description: This file contains the gui for the harvestor scraper.
+
+class mainWindow:
+    def __init__(self):
+        
+        self.scrapperWindow = tk.Tk()
+
+        #Window background color
+        self.scrapperWindow.configure(bg="#2f4f4f")
+
+        #Window size
+        self.scrapperWindow.geometry("600x500")
+
+        #Title window
+        self.scrapperWindow.title("Scrapper")
+
+        #Label for URL entry field
+        self.labelURL = tk.Label(self.scrapperWindow, text="Enter URL: ",bg="#2f4f4f")
+        self.labelURL.place(x=15,y=40)
+
+        #URL input field
+        self.entryURL = tk.Entry(self.scrapperWindow)
+        self.entryURL.place(x=80,y=40)
+
+        #Label for HTML element options dropdown box
+        self.labelElements = tk.Label(self.scrapperWindow, text="Search: ",bg="#2f4f4f")
+        self.labelElements.place(x=225,y=15)
+        
+        #List of dropdown options
+        options = ["p","h1","img"]
+        
+        #Combobox for elements
+        self.tagBox = ttk.Combobox(self.scrapperWindow, values=options)
+        self.tagBox.current(0)
+        self.tagBox.place(x=230,y=40)
+
+        #Button submit
+        self.buttonSubmit = tk.Button(self.scrapperWindow, text="Submit",bg="#2f4f4f")
+        self.buttonSubmit.place(x=400,y=15)
+
+        #Label results section
+        self.labelResults = tk.Label(self.scrapperWindow, text="Results:",bg="#2f4f4f")
+        self.labelResults.place(x=15,y=100)
+
+        #Tree results table
+        self.tableResults = ttk.Treeview(self.scrapperWindow, columns=("Headers",), show='headings')
+        self.tableResults.heading("Headers", text="Headers")
+        self.tableResults.column("Headers", width=540)
+        self.tableResults.place(x=15,y=130)
+                                    
+        #Label export data
+        self.labelExport = tk.Label(text="Export to CSV",bg="#2f4f4f")
+        self.labelExport.place(x=485,y=375)
+
+        #Button export
+        self.buttonExport = tk.Button(text="Export",bg="#2f4f4f")
+        self.buttonExport.place(x=515,y=395)
+
+    #Function - creating a live window
+    def run(self):
+        self.scrapperWindow.mainloop()
