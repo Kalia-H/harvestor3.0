@@ -8,6 +8,9 @@
 #File Name: interface.py
 #File Description: This file contains the gui for the harvestor scraper.
 
+import tkinter as tk
+from tkinter import ttk
+
 class mainWindow:
     def __init__(self):
         
