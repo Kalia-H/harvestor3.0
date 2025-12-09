@@ -19,11 +19,28 @@ def get_header(referer, userAgent):
         "Referer": referer,
         "User-Agent": userAgent
     }
+    ###TEST
+    print("Process one called")
 
     return header
     
 #FUNCTION - Fetch html (process two)
-
+    def fetch_html(url, headers, proxy):
+        status = response.status_code
+        if(status != 200):
+            print("Error: Unable to fetch the webpage.")
+        else:
+            response = requests.get(url, headers=headers, proxies=proxy)
+            return response.text
+        
+    ###TEST
+    print("Process two called")
+        
 #FUNCTION - Parse (process three)
+def parse_html(html):
+    soup = BeautifulSoup(html, 'lxml')
 
+    ###TEST
+    print("Process three called")
+    return soup
 #FUNCTION - Extract (process four)
