@@ -43,4 +43,15 @@ def parse_html(html):
     ###TEST
     print("Process three called")
     return soup
+
 #FUNCTION - Extract (process four)
+def extract_elements(soup, tag):
+    elements = soup.find_all(tag)
+
+    #creating an array to store the extracted elements
+    extracted = []
+
+    for element in elements:
+        extracted.append(elements.text.strip())
+
+    return extracted
