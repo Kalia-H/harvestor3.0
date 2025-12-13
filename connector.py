@@ -36,3 +36,6 @@ def on_export(window):
 #creating an instance of the mainWindow class from interface.py
 active_window = mainWindow()
 
+#running the window
+active_window.run()
+
