@@ -35,3 +35,16 @@ def get_random_agent(index, user_agents):
 def get_random_referer(index, referers):
     length = len(referers)
     return referers[index % length]
+
+#FUNCTION - Get header (process one)
+def get_header(referer, userAgent):
+    header = {
+        "Accept": "application/json, text/html, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": referer,
+        "User-Agent": userAgent
+    }
+    ###TEST
+    print("Process one called")
+
+    return header

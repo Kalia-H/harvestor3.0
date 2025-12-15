@@ -10,33 +10,25 @@
 
 import requests
 from bs4 import BeautifulSoup
+  
+#FUNCTION - Fetch html (process one)
+def fetch_html(url, headers, proxy):
+    try:
+        response = requests.get(url, headers=headers, proxies=proxy)
+    except requests.RequestException as e:
+        print("Error: Unable to fetch the webpage.", e)
+        return None
 
-#FUNCTION - Get header (process one)
-def get_header(referer, userAgent):
-    header = {
-        "Accept": "application/json, text/html, */*",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": referer,
-        "User-Agent": userAgent
-    }
-    ###TEST
-    print("Process one called")
+    status = response.status_code
+    if status != 200:
+        print(f"Error: Received status code {status}")
+        return None
 
-    return header
-    
-#FUNCTION - Fetch html (process two)
-    def fetch_html(url, headers, proxy):
-        status = response.status_code
-        if(status != 200):
-            print("Error: Unable to fetch the webpage.")
-        else:
-            response = requests.get(url, headers=headers, proxies=proxy)
-            return response.text
-        
     ###TEST
     print("Process two called")
+    return response.text
         
-#FUNCTION - Parse (process three)
+#FUNCTION - Parse (process two)
 def parse_html(html):
     soup = BeautifulSoup(html, 'lxml')
 
@@ -44,7 +36,7 @@ def parse_html(html):
     print("Process three called")
     return soup
 
-#FUNCTION - Extract (process four)
+#FUNCTION - Extract (process three)
 def extract_elements(soup, tag):
     elements = soup.find_all(tag)
 
@@ -52,6 +44,7 @@ def extract_elements(soup, tag):
     extracted = []
 
     for element in elements:
-        extracted.append(elements.text.strip())
+        text = element.get_text() if hasattr(element, 'get_text') else str(element)
+        extracted.append(text.strip())
 
     return extracted

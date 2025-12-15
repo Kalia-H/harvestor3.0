@@ -70,3 +70,13 @@ class mainWindow:
     #Function - creating a live window
     def run(self):
         self.scrapperWindow.mainloop()
+
+#Function - getting the entered url
+def get_url(self):
+    target_url = self.entryURL.get()
+    return target_url
+    
+#Function - getting the selected tag
+def get_tag(self):
+    tag = self.tagBox.get()
+    return tag
