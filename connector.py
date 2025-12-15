@@ -15,6 +15,34 @@ import config.headers as headers
 import config.ips as ips
 import tkinter as tk
 
+
+#FUNCTION - Display extracted data in the GUI table
+def display_results(window, data):
+    
+    tree = window.tableResults
+
+    #clearing previous results
+    for item in tree.get_children():
+        tree.delete(item)
+    
+    for extract in data:
+        if isinstance(extract, (list, tuple)):
+            # join multiple fields into a single string for the single-column table
+            value = " ".join(map(str, extract))
+            values = (value,)
+        else:
+            values = (str(extract),)
+
+        #Test
+        print("Inserting values:", values)
+
+        #inserting new results (one row per extracted item)
+        tree.insert("", tk.END, values=values)
+
+    #TEST
+    print("Display results called successfully")
+    
+    
 #FUNCTION - Logic Flow
 def run_scraper(window):
 
@@ -32,12 +60,18 @@ def run_scraper(window):
     referer = headers.get_random_referer(request_count, referers_list)
     userAgent = headers.get_random_agent(request_count, user_agents_list)
 
+    ###TEST
+    print("Using Referer:", referer)
+    print("Using User-Agent:", userAgent)
+
     #getting header
     hdr = headers.get_header(referer, userAgent)
 
     #getting proxy (string) and convert to requests' proxies dict
     proxy_ip = ips.get_random_ip(request_count, ips_list)
     proxy = ips.get_proxie_dict(proxy_ip)
+    ###TEST
+    print("Using Proxy:", proxy_ip)
 
     #getting tag
     tag = face.get_tag(window)
@@ -70,6 +104,10 @@ def run_scraper(window):
 
     #incrementing request count
     window.request_count += 1
+    print("Request count:", window.request_count)
+
+    #displaying results in the GUI
+    display_results(window, extracted_data)
 
     ###TEST
     print("Run_scraper called successfully")
