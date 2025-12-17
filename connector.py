@@ -14,6 +14,15 @@ from gui.interface import mainWindow
 import config.headers as headers
 import config.ips as ips
 import tkinter as tk
+import logic.imgHandler as imgHandler
+
+#Function - Run image processing
+def run_image_processing(extracted_elements, base_url, referer, user_agent, proxy):
+    #getting image urls
+    img_urls = imgHandler.get_image_urls(extracted_elements, base_url)
+
+    #downloading and saving images
+    imgHandler.download_and_save_images(img_urls, headers, proxy)
 
 
 #FUNCTION - Display extracted data in the GUI table
