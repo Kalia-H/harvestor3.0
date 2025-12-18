@@ -17,12 +17,46 @@ import tkinter as tk
 import logic.imgHandler as imgHandler
 
 #Function - Run image processing
-def run_image_processing(extracted_elements, base_url, referer, user_agent, proxy):
+def run_image_processing(window,extracted_elements, base_url, referer, user_agent, proxy):
     #getting image urls
     img_urls = imgHandler.get_image_urls(extracted_elements, base_url)
 
-    #downloading and saving images
-    imgHandler.download_and_save_images(img_urls, headers, proxy)
+    ###TEST
+    print("**************************")
+    print("IMAGE TEST START HERE")
+
+    for img_url in img_urls:
+
+        #get request count
+        request_count = window.request_count
+
+        #getting referrers
+        referers_list = headers.referers
+        user_agent_list = headers.user_agents
+
+        #getting list of ips
+        ips_list = ips.ips
+
+        #getting assigned referer and user agent
+        referer = headers.get_random_referer(request_count, referers_list)
+        userAgent = headers.get_random_agent(request_count, user_agent_list)
+
+        ###TEST
+        print("Using Referer for image:", referer)
+        print("Using User-Agent for image:", userAgent)
+
+        #getting header for image request
+        headers_img = headers.get_header(referer, userAgent)
+
+        #getting proxy (string) and convert to requests' proxies dict
+        proxy_ip = ips.get_random_ip(request_count, ips_list)
+        proxy = ips.get_proxie_dict(proxy_ip)
+
+        ###TEST
+        print("Using Proxy for image:", proxy_ip)
+
+        #downloading and saving images
+        imgHandler.download_and_save_images(img_url, headers, proxy)
 
 
 #FUNCTION - Display extracted data in the GUI table
