@@ -15,15 +15,21 @@ import config.headers as headers
 import config.ips as ips
 import tkinter as tk
 import logic.imgHandler as imgHandler
+import platform
+import sys
 
 #Function - Run image processing
-def run_image_processing(window,extracted_elements, base_url, referer, user_agent, proxy):
+def run_image_processing(window,extracted_elements, base_url):
+
     #getting image urls
     img_urls = imgHandler.get_image_urls(extracted_elements, base_url)
 
     ###TEST
     print("**************************")
     print("IMAGE TEST START HERE")
+
+    #creating an array to hold downloaded images
+    downloaded_images = []
 
     for img_url in img_urls:
 
@@ -55,10 +61,14 @@ def run_image_processing(window,extracted_elements, base_url, referer, user_agen
         ###TEST
         print("Using Proxy for image:", proxy_ip)
 
-        #downloading and saving images
-        imgHandler.download_and_save_images(img_url, headers, proxy)
+        #downloading and saving image
+        this_img = imgHandler.download_and_save_images(img_url, headers_img, proxy)
 
+        downloaded_images.append(this_img)
 
+        imgHandler.saveImages(downloaded_images)
+    
+    
 #FUNCTION - Display extracted data in the GUI table
 def display_results(window, data):
     
@@ -84,7 +94,6 @@ def display_results(window, data):
 
     #TEST
     print("Display results called successfully")
-    
     
 #FUNCTION - Logic Flow
 def run_scraper(window):
@@ -140,21 +149,21 @@ def run_scraper(window):
         extracted_data = core.extract_elements(site_soup, tag)
 
         #TEST
-        print("Extracted Data:", extracted_data)
-    else:
-        #print error message
-        print("Failed to retrieve HTML content.")
+        if tag.lower() != "img":
+            print("Extracted Data:", extracted_data)
 
     #incrementing request count
     window.request_count += 1
     print("Request count:", window.request_count)
 
-    #displaying results in the GUI
-    display_results(window, extracted_data)
-
     ###TEST
     print("Run_scraper called successfully")
 
+    if tag.lower() == "img":
+        run_image_processing(window, extracted_data, url)
+    else:
+        #displaying results in the GUI table
+        display_results(window, extracted_data)
 
 #FUNCTION - Handle submit button
 def on_submit(window):  
@@ -167,6 +176,10 @@ def on_submit(window):
 def on_export(window):
     ###TEST
     print("on_export called")
+
+if platform.system() != "Windows":
+    print("This application is designed to run on Windows OS.")
+    sys.exit()
 
 #create an instance of the mainWindow class from interface.py
 active_window = mainWindow()

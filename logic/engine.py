@@ -40,11 +40,13 @@ def parse_html(html):
 def extract_elements(soup, tag):
     elements = soup.find_all(tag)
 
-    #creating an array to store the extracted elements
-    extracted = []
+    if tag.lower() == 'img':
+        data_extracts = elements
+    else:
+        data_extracts = []
 
-    for element in elements:
-        text = element.get_text() if hasattr(element, 'get_text') else str(element)
-        extracted.append(text.strip())
+        for element in elements:
+            text = element.get_text() if hasattr(element, 'get_text') else str(element)
+            data_extracts.append(text.strip())
 
-    return extracted
+    return data_extracts
